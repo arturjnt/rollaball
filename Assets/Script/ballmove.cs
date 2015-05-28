@@ -11,19 +11,35 @@ public class ballmove : MonoBehaviour
 
 	private Rigidbody rb;
 	private int count = 12;
+	private float timer;
+	private Vector3 initialPos;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		setCountText ();
 		winText.text = "";
+		timer = 0;
+		initialPos = transform.position;
 	}
 
 	void setCountText()
 	{
-		countText.text = "Faltam> " + count.ToString();
+		countText.text = "Missing> " + count.ToString() + " | Timer: " + timer.ToString("F2") + 
+			"\n(R) to restart!";
 		if (count <= 0) {
-			winText.text = "Conseguiste em: " + Time.time.ToString();
+			winText.text = "You did it in: " + timer.ToString("F2");
+		}
+	}
+
+	void Update() {
+		timer += Time.deltaTime;
+		if (count > 0) {
+			setCountText ();
+		}
+		
+		if (Input.GetKeyDown(KeyCode.R)) {
+			Application.LoadLevel (Application.loadedLevelName);
 		}
 	}
 
